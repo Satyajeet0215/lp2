@@ -12,6 +12,7 @@ const int INF = 1e9;
 void prims(int n, vector<pair<int, int>> adj[]) {
     vector<int> key(n + 1, INF);
     vector<bool> vis(n + 1, false);
+    vector<int> parent(n + 1, -1);
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int,int>>> pq;
 
     key[1] = 0;
@@ -33,9 +34,16 @@ void prims(int n, vector<pair<int, int>> adj[]) {
         for (auto [v, w] : adj[u]) {
             if (!vis[v] && w < key[v]) {
                 key[v] = w;
+                parent[v] = u;
                 pq.push({w, v});
             }
         }
+    }
+
+    cout << "\nEdges in the Minimum Spanning Tree:\n";
+    for (int i = 2; i <= n; ++i) {
+        if (parent[i] != -1)
+            cout << parent[i] << " - " << i << " (weight: " << key[i] << ")\n";
     }
 
     cout << "\nTotal Minimum Cost (MST): " << cost << endl;
