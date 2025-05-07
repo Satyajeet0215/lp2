@@ -27,9 +27,9 @@ void solve(int node, int m, int n, vector<int>& colors) {
 
     for (int color = 1; color <= m; color++) {
         if (isSafe(node, color, colors)) {
-            colors[node] = color;
+            colors[node] = color;        // Assign color
             solve(node + 1, m, n, colors);
-            colors[node] = 0; // Backtrack
+            colors[node] = 0;            // Backtrack
         }
     }
 }

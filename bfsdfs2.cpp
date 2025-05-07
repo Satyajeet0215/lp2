@@ -9,7 +9,7 @@ void dfs_recursive(int node, vector<int> adj[], vector<int>& vis, vector<int>& d
     dfs_result.push_back(node);
 
     for (int x : adj[node]) {
-        if (vis[x]==0) {
+        if (vis[x] == 0) {
             dfs_recursive(x, adj, vis, dfs_result);
         }
     }
@@ -29,30 +29,38 @@ void dfs(vector<int> adj[], int n) {
     cout << endl;
 }
 
-// BFS function
-void bfs(vector<int> adj[], int n) {
-    vector<int> vis(n + 1, 0);
-    vis[1] = 1;
-    queue<int> q;
-    q.push(1);
-    vector<int> bfs;
+// Recursive BFS utility function
+void bfs_recursive(queue<int>& q, vector<int>& vis, vector<int>& bfs_result, vector<int> adj[]) {
+    if (q.empty()) return;
 
-    while (!q.empty()) {
-        int node = q.front();
-        q.pop();
-        bfs.push_back(node);
+    int node = q.front();
+    q.pop();
+    bfs_result.push_back(node);
 
-        for (int x : adj[node]) {
-            if (vis[x] == 0) {
-                vis[x] = 1;
-                q.push(x);
-            }
+    for (int x : adj[node]) {
+        if (vis[x] == 0) {
+            vis[x] = 1;
+            q.push(x);
         }
     }
 
+    bfs_recursive(q, vis, bfs_result, adj);
+}
+
+// BFS wrapper function
+void bfs(vector<int> adj[], int n) {
+    vector<int> vis(n + 1, 0);
+    queue<int> q;
+    vector<int> bfs_result;
+
+    vis[1] = 1;
+    q.push(1);
+
+    bfs_recursive(q, vis, bfs_result, adj);
+
     cout << "BFS Traversal: ";
-    for (int i = 0; i < bfs.size(); i++) {
-        cout << bfs[i] << " ";
+    for (int i = 0; i < bfs_result.size(); i++) {
+        cout << bfs_result[i] << " ";
     }
     cout << endl;
 }
@@ -63,7 +71,7 @@ int main() {
     cin >> n >> m;
 
     vector<int> adj[n + 1];
-    
+
     cout << "Enter " << m << " edges (v u):\n";
     for (int i = 1; i <= m; i++) {
         int v, u;
